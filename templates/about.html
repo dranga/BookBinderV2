@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>BookBinder: About</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="{{ url_for('static', filename='css/starter-template.css')}}" rel="stylesheet">
+
+        <style type="text/css">
+
+            div.top {
+                background-image: url({{url_for('static', filename='css/Book3.svg')}});
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+            }
+            
+        </style>
+    </head>
+
+    <body>
+    
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <!--<span class="icon-bar"></span>-->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href=".">BookBinder</a>
+            </div>
+            
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <!--<li class="active"><a href="#">Home</a></li>-->
+                <li><a href="/#help">Help</a></li>
+                <li><a href="/about">About</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+    <div class="top">
+        <div class="container">
+          <div class="starter-template">
+            <h1>About BookBinder</h1>
+                <p class="lead">
+                    BookBinder is a web application to generate custom PDF eBooks from PDF sections.<br>
+                </p>
+                <p class="lead">
+                    <strong>Features include: </strong><br>
+                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 
+                        Front cover page and choice of blank back to front cover<br>                      
+                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                        Back cover page<br>
+                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                        Even the number of pages to have the back cover as an even page (like a book)<br>
+                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                        Add table of contents<br>
+                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                        Pages are numbered in the right corner for odd pages and in the left corner for even pages<br>
+                    <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                        Page number location is adjustable<br>
+                    <br>
+                </p>
+                <p class="lead">
+                    This is acheived by generating and compiling a LaTeX file. The resulting PDF is returned.<br>
+                    This project is stored on <a href="https://github.com/dranga/BookBinder">GitHub</a>.
+                </p>
+          </div>
+        </div>
+    </div>
+
+            <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    </body>
+</html>

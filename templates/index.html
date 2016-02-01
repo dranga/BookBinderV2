@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>BookBinder</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="{{ url_for('static', filename='css/starter-template.css')}}" rel="stylesheet">
+
+        <style type="text/css">
+
+            div.top {
+                background-image: url({{url_for('static', filename='css/Book3.svg')}});
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+            }
+            
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">BookBinder</a>
+            </div>
+            
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="#help" id="helpbtn">Help</a></li>
+                <li><a href="/about">About</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+    <div class="top">
+        <div class="container">        
+        <div>
+            <div class="control-group col-xs-8" id="fields">
+                <div class="controls">
+                    <form name='newBook_form' role="form" enctype="multipart/form-data" action="/newBook" method="post" autocomplete="off" onsubmit="return validateForm()">
+                        
+                        <label>Front Cover</label>
+                        <input class="form-control" name="cover" id="cover1" type="file" required>
+                        <label><input type="checkbox" name="blankcover" checked> Add blank back to cover</label>
+                        <br>
+                        <br>
+                        <label>Back cover</label>
+                        <input class="form-control" name="back" type="file" required>
+                        <label><input type="checkbox" name="makeeven" checked> Make back cover even if final page count is odd</label>
+                        <br>
+                        <br>
+                        <label><input type="checkbox" name="TOC" checked> Generate table of contents</label>
+                        <br>
+                        <br>
+
+                        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Page Margins
+                        </button>
+                        <div class="collapse" id="collapseExample">
+                          <div class="well">
+                            <label>Right Margin</label>
+                            <input type="text" name="right" value="0.25" size="4">
+                            <br>
+
+                            <label>Left Margin</label>
+                            <input type="text" name="left" value="2" size="4">
+                            <br>
+
+                            <label>Top Margin</label>
+                            <input type="text" name="top" value="1" size="4">
+                            <br>
+
+                            <label>Bottom Margin</label>
+                            <input type="text" name="bottom" value="0.75" size="4">
+                            <br>
+                          </div>
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <label>Sections</label>
+                        <span class="listspan">
+                            <div class="entry input-group row">
+								<div class="col-md-4">
+									<input class="form-control datainput" name="sectionnames[]" type="text" placeholder="Section name" required>
+								</div>
+								<div class="col-md-4">
+									<input class="form-control datainput" name="files[]" type="file" required>
+                                </div>
+                                <div class="col-md-3">
+									<input type="hidden" name="makesectioneven[]" value="buffer" />
+									<label><input type="checkbox" name="makesectioneven[]" value="on" checked>Make PDF even</label>
+								</div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-success btn-add" type="button">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </span>
+                        <br>
+                        <label><input type="checkbox" name="LaTeX" value='on'> Return LaTeX source instead of PDF</label>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="helpdiv" style="display:none;">
+                    <strong>Front Cover:</strong> PDF of book cover. (Required)<br>
+                    <strong>Add blank back to cover:</strong> if checked, adds blank page after the cover, the cover sheet will only have the cover page.<br>
+                    <strong>Back Cover:</strong> PDF of back of book. (Required)<br>
+                    <strong>Make Back Cover Even:</strong> makes the PDF even paged such that when printed and bound the last page is the back cover, not blank.<br>
+                    <strong>Generate Table of Contents:</strong> add a table of contents after the cover, with section names and page numbers.<br>
+                    <strong>Page Margins:</strong> margins controling location of page number.<br>
+                    <strong>Sections:</strong> a section name appearing in the table of contents and the PDF of the section.<br>
+                    <strong>Use the + and - to add and remove sections from the selection.</strong>
+            </div>
+        </div>
+    <div>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src={{ url_for('static', filename='js/dynamicform.js')}}></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#helpbtn").click(function(){
+                    $("#helpdiv").toggle();
+                });
+            });
+            
+            function validateForm() {
+				var newBook_form = document.forms["newBook_form"];
+				
+				//test for pdf extension
+				//filename.split('.').pop()
+				
+				if(/[$&%#{}~^]|\s+/.test(newBook_form["cover"].files[0].name)) {
+					alert("Front cover page file name (or path) cannot have spaces or special characters in it")
+					return false;
+				}
+				
+				if(/[$&%#{}~^]|\s+/.test(newBook_form["back"].files[0].name)) {
+					alert("Back cover page file name (or path) cannot have spaces or special characters in it")
+					return false;
+				}
+				
+				if(newBook_form["sectionnames[]"].length === undefined) {
+					if(/[$&%#_{}~^\\]/.test(newBook_form["sectionnames[]"].value)) {
+							alert("Section name " + newBook_form["sectionnames[]"].value + " cannot have special characters $ & % # _ { } ~ ^ \\  in it")
+							return false;
+						}
+						
+						if(/[$&%#{}~^]|\s+/.test(newBook_form["files[]"].value)) {
+							alert("File name (or path) for section \"" + newBook_form["sectionnames[]"].value + "\" cannot have spaces or special characters in it")
+							return false;
+						}
+				} else {
+					for (i = 0; i < newBook_form["sectionnames[]"].length; i++) { 
+						
+						if(/[$&%#_{}~^\\]/.test(newBook_form["sectionnames[]"][i].value)) {
+							alert("Section name " + newBook_form["sectionnames[]"][i].value + " cannot have special characters $ & % # _ { } ~ ^ \\  in it")
+							return false;
+						}
+						
+						if(/[$&%#{}~^]|\s+/.test(newBook_form["files[]"][i].value)) {
+							alert("File name (or path) for section \"" + newBook_form["sectionnames[]"][i].value + "\" cannot have spaces or special characters in it")
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+		</script>
+    </body>
+</html>
